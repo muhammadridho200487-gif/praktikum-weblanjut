@@ -1,41 +1,35 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Surat Masuk</title>
-</head>
-<body>
+@extends('layouts.app')
 
-        <h1>Halaman Ini Menampilkan Data Surat Masuk.</h1>
+@section('content')
+    <h1>Surat Masuk</h1>
+    <p>Halaman ini menampilkan data surat masuk.</p>
 
-        <table border="1" cellpadding="10">
-            <thead>
-                <tr>
-                    <th>Nomor</th>
-                    <th>Nomor_surat</th>
-                    <th>Tanggal</th>
-                    <th>Pengirim</th>
-                    <th>Perihal</th>
-                    <th>Aksi</th>
-                </tr>
-
-            </thead>
-
-        <tbody>
-            @foreach($SuratMasuk as $surat)
+    <table border="1" cellpadding="10" cellspacing="0">
+        <thead>
             <tr>
-                <td>{{ $loop->iteration}}</td>
-                <td>{{ $surat['nomor_surat']}}</td>
-                <td>{{ $surat['tanggal']}}</td>
-                <td>{{ $surat['pengirim']}}</td>
-                <td>{{ $surat['perihal']}}</td>
-                <td>
-                    <a href="{{route('surat-masuk.show', $surat['id'])}}">Detail</a>
-                </td>
+                <th>No.</th>
+                <th>Nomor Surat</th>
+                <th>Tanggal</th>
+                <th>Pengirim</th>
+                <th>Perihal</th>
+                <th>Aksi</th>
             </tr>
+        </thead>
+        <tbody>
+            @foreach ($SuratMasuk as $surat)
+                <tr>
+                    <td>{{ $surat['id'] }}</td>
+                    <td>{{ $surat['nomor_surat'] }}</td>
+                    <td>{{ $surat['tanggal'] }}</td>
+                    <td>{{ $surat['pengirim'] }}</td>
+                    <td>{{ $surat['perihal'] }}</td>
+                    <td>
+                        <a href="{{ route('surat-masuk.show', $surat['id']) }}">
+                            Detail
+                        </a>
+                    </td>
+                </tr>
             @endforeach
         </tbody>
-        </table>
-</body>
-</html>
+    </table>
+@endsection

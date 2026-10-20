@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detail Surat Masuk</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('title', 'Surat Masuk')
+
+@section('content')
+
     <h1>Halaman Detail Surat Masuk</h1>
 @if($SuratShow)
     <p>
@@ -17,6 +15,6 @@
 @else
     <p>Data tidak ditemukan</p>
 @endif
-    
-</body>
-</html>
+
+<a href="{{ route('surat-keluar.index') }}">Kembali</a>
+@endsection
