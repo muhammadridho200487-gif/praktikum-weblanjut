@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('title', 'Surat Keluar')
+
 @section('content')
     <h1>Surat Keluar</h1>
     <p>Halaman ini menampilkan data surat keluar.</p>
@@ -10,25 +12,31 @@
                 <th>No.</th>
                 <th>Nomor Surat</th>
                 <th>Tanggal</th>
-                <th>Pengirim</th>
+                <th>Tujuan</th>
                 <th>Perihal</th>
                 <th>Aksi</th>
             </tr>
         </thead>
+
         <tbody>
-            @foreach ($SuratKeluar as $surat)
+            @forelse ($SuratKeluar as $surat)
                 <tr>
-                    <td>{{ $surat['id'] }}</td>
-                    <td>{{ $surat['nomor_surat'] }}</td>
-                    <td>{{ $surat['tanggal'] }}</td>
-                    <td>{{ $surat['pengirim'] }}</td>
-                    <td>{{ $surat['perihal'] }}</td>
+                    <td>{{ $surat->id }}</td>
+                    <td>{{ $surat->nomor_surat }}</td>
+                    <td>{{ $surat->tanggal->format('d-m-Y') }}</td>
+                    <td>{{ $surat->tujuan }}</td>
+                    <td>{{ $surat->perihal }}</td>
                     <td>
-                        <a href="{{ route('surat-keluar.show', $surat['id']) }}">Detail</a>
+                        <a href="{{ route('surat-keluar.show', $surat->id) }}">
+                            Detail
                         </a>
                     </td>
                 </tr>
-            @endforeach
+            @empty
+                <tr>
+                    <td colspan="6">Belum ada data surat keluar.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 @endsection
