@@ -3,7 +3,7 @@
 @section('title', 'Detail Surat Keluar')
 
 @section('content')
-    <h1>Halaman Detail Surat Keluar</h1>
+    <h1>Detail Surat Keluar</h1>
 
     @if ($SuratShow)
         <p>
@@ -30,9 +30,19 @@
             <strong>Keterangan:</strong>
             {{ $SuratShow->keterangan ?? '-' }}
         </p>
+
+        {{-- Tombol edit hanya untuk Petugas --}}
+        @can('manage-letters')
+            <a href="{{ route('surat-keluar.edit', $SuratShow->id) }}">
+                Edit Surat
+            </a>
+        @endcan
+
     @else
         <p>Data surat keluar tidak ditemukan.</p>
     @endif
+
+    <br>
 
     <a href="{{ route('surat-keluar.index') }}">
         Kembali ke Surat Keluar
