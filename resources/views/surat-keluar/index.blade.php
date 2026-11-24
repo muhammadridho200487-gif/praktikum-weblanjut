@@ -3,76 +3,211 @@
 @section('title', 'Surat Keluar')
 
 @section('content')
-    <h1>Surat Keluar</h1>
-    <p>Halaman ini menampilkan data surat keluar.</p>
 
+<div class="max-w-7xl mx-auto px-6 py-10">
+
+    {{-- HEADER HALAMAN --}}
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-5 mb-8">
+
+        <div>
+            <p class="text-sm font-medium text-violet-400 mb-2">
+                MANAJEMEN SURAT
+            </p>
+
+            <h1 class="text-3xl font-bold text-white">
+                Surat Keluar
+            </h1>
+
+            <p class="text-slate-400 text-sm mt-2">
+                Daftar dan pengelolaan surat yang diterbitkan.
+            </p>
+        </div>
+
+        @can('manage-letters')
+            <a href="{{ route('surat-keluar.create') }}"
+               class="btn-primary rounded-xl px-5 py-3 text-sm font-semibold flex items-center justify-center gap-2">
+
+                <span class="text-xl">+</span>
+                Tambah Surat Keluar
+
+            </a>
+        @endcan
+
+    </div>
+
+    {{-- NOTIFIKASI --}}
     @if (session('success'))
-        <div style="color: green; margin-bottom: 15px;">
+        <div class="mb-6 rounded-xl border border-emerald-400/30 bg-emerald-400/10 px-5 py-4 text-sm text-emerald-300">
             {{ session('success') }}
         </div>
     @endif
 
-    {{-- Tombol tambah hanya untuk Petugas --}}
-    @can('manage-letters')
-        <a href="{{ route('surat-keluar.create') }}">
-            + Tambah Surat Keluar
-        </a>
-    @endcan
+    {{-- TABEL SURAT --}}
+    <div class="glass-card rounded-2xl overflow-hidden">
 
-    <br><br>
+        <div class="p-6 border-b border-white/10 flex items-center justify-between">
 
-    <table border="1" cellpadding="10" cellspacing="0">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>Nomor Surat</th>
-                <th>Tanggal</th>
-                <th>Tujuan</th>
-                <th>Perihal</th>
-                <th>Aksi</th>
-            </tr>
-        </thead>
+            <div>
+                <h2 class="text-lg font-semibold text-white">
+                    Daftar Surat Keluar
+                </h2>
 
-        <tbody>
-            @forelse ($SuratKeluar as $surat)
-                <tr>
-                    <td>{{ $loop->iteration }}</td>
-                    <td>{{ $surat->nomor_surat }}</td>
-                    <td>{{ $surat->tanggal->format('d-m-Y') }}</td>
-                    <td>{{ $surat->tujuan }}</td>
-                    <td>{{ $surat->perihal }}</td>
+                <p class="text-sm text-slate-400 mt-1">
+                    Informasi surat yang telah diterbitkan oleh instansi.
+                </p>
+            </div>
 
-                    <td>
-                        <a href="{{ route('surat-keluar.show', $surat->id) }}">
-                            Detail
-                        </a>
+            <div class="hidden sm:flex w-11 h-11 rounded-xl bg-violet-500/15 items-center justify-center">
 
-                        {{-- Edit dan hapus hanya untuk Petugas --}}
-                        @can('manage-letters')
-                            |
-                            <a href="{{ route('surat-keluar.edit', $surat->id) }}">
-                                Edit
-                            </a>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     class="w-6 h-6 text-violet-400"
+                     fill="none"
+                     viewBox="0 0 24 24"
+                     stroke="currentColor"
+                     stroke-width="1.7">
 
-                            |
+                    <path stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="M7 8h10M7 12h10M7 16h6M5 3h10l4 4v14H5V3z" />
 
-                            <form action="{{ route('surat-keluar.destroy', $surat->id) }}"
-                                  method="POST"
-                                  style="display: inline;"
-                                  onsubmit="return confirm('Yakin ingin menghapus surat ini?')">
-                                @csrf
-                                @method('DELETE')
+                </svg>
 
-                                <button type="submit">Hapus</button>
-                            </form>
-                        @endcan
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="6">Belum ada data surat keluar.</td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </div>
+
+        </div>
+
+        <div class="overflow-x-auto">
+
+            <table class="table-modern w-full text-left text-sm">
+
+                <thead>
+                    <tr class="text-slate-400 bg-white/[0.03]">
+                        <th class="px-6 py-4 font-medium">No.</th>
+                        <th class="px-6 py-4 font-medium">Nomor Surat</th>
+                        <th class="px-6 py-4 font-medium">Tanggal</th>
+                        <th class="px-6 py-4 font-medium">Tujuan</th>
+                        <th class="px-6 py-4 font-medium">Perihal</th>
+                        <th class="px-6 py-4 font-medium text-center">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-white/5">
+
+                    @forelse ($SuratKeluar as $surat)
+
+                        <tr class="hover:bg-white/[0.03] transition-colors">
+
+                            <td class="px-6 py-4 text-slate-400">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="px-6 py-4 text-white font-medium whitespace-nowrap">
+                                {{ $surat->nomor_surat }}
+                            </td>
+
+                            <td class="px-6 py-4 text-slate-300 whitespace-nowrap">
+                                {{ $surat->tanggal->format('d-m-Y') }}
+                            </td>
+
+                            <td class="px-6 py-4 text-slate-300">
+                                {{ $surat->tujuan }}
+                            </td>
+
+                            <td class="px-6 py-4 text-slate-300">
+                                {{ $surat->perihal }}
+                            </td>
+
+                            <td class="px-6 py-4">
+
+                                <div class="flex items-center justify-center gap-2">
+
+                                    <a href="{{ route('surat-keluar.show', $surat->id) }}"
+                                       class="rounded-lg bg-blue-500/10 border border-blue-400/20 px-3 py-2 text-xs font-medium text-blue-400 hover:bg-blue-500/20 transition-colors">
+                                        Detail
+                                    </a>
+
+                                    @can('manage-letters')
+
+                                        <a href="{{ route('surat-keluar.edit', $surat->id) }}"
+                                           class="rounded-lg bg-amber-500/10 border border-amber-400/20 px-3 py-2 text-xs font-medium text-amber-400 hover:bg-amber-500/20 transition-colors">
+                                            Edit
+                                        </a>
+
+                                        <form action="{{ route('surat-keluar.destroy', $surat->id) }}"
+                                              method="POST"
+                                              onsubmit="return confirm('Yakin ingin menghapus surat ini?')">
+
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                    class="rounded-lg bg-red-500/10 border border-red-400/20 px-3 py-2 text-xs font-medium text-red-400 hover:bg-red-500/20 transition-colors">
+                                                Hapus
+                                            </button>
+
+                                        </form>
+
+                                    @endcan
+
+                                </div>
+
+                            </td>
+
+                        </tr>
+
+                    @empty
+
+                        <tr>
+                            <td colspan="6" class="px-6 py-12 text-center">
+
+                                <div class="flex flex-col items-center">
+
+                                    <div class="w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center mb-4">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             class="w-7 h-7 text-slate-500"
+                                             fill="none"
+                                             viewBox="0 0 24 24"
+                                             stroke="currentColor"
+                                             stroke-width="1.5">
+
+                                            <path stroke-linecap="round"
+                                                  stroke-linejoin="round"
+                                                  d="M7 8h10M7 12h10M7 16h6M5 3h10l4 4v14H5V3z" />
+
+                                        </svg>
+
+                                    </div>
+
+                                    <p class="text-slate-300 font-medium">
+                                        Belum ada data surat keluar
+                                    </p>
+
+                                    <p class="text-slate-500 text-xs mt-2">
+                                        Data surat keluar akan ditampilkan di sini.
+                                    </p>
+
+                                </div>
+
+                            </td>
+                        </tr>
+
+                    @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="px-6 py-4 border-t border-white/10">
+            <p class="text-xs text-slate-500">
+                Sistem Informasi Surat • Data Surat Keluar
+            </p>
+        </div>
+
+    </div>
+
+</div>
+
 @endsection
