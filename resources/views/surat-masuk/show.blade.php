@@ -11,10 +11,8 @@
 
         <a href="{{ route('surat-masuk.index') }}"
            class="inline-flex items-center gap-2 text-sm text-blue-400 hover:text-blue-300 transition-colors mb-6">
-
             <span>←</span>
             Kembali ke Surat Masuk
-
         </a>
 
         <p class="text-sm font-medium text-blue-400 mb-2">
@@ -125,6 +123,44 @@
                         </p>
                     </div>
 
+                    {{-- Kategori --}}
+                    <div class="rounded-xl bg-white/[0.03] border border-white/5 p-5">
+                        <p class="text-xs text-slate-400 mb-2">
+                            KATEGORI SURAT
+                        </p>
+
+                        @if ($SuratShow->category)
+                            <span class="inline-block rounded-lg bg-blue-500/10 border border-blue-400/20 px-3 py-1 text-sm font-medium text-blue-300">
+                                {{ $SuratShow->category->nama }}
+                            </span>
+                        @else
+                            <p class="text-sm text-slate-400">
+                                Belum dikategorikan
+                            </p>
+                        @endif
+                    </div>
+
+                    {{-- Lampiran --}}
+                    <div class="rounded-xl bg-white/[0.03] border border-white/5 p-5">
+                        <p class="text-xs text-slate-400 mb-2">
+                            LAMPIRAN SURAT
+                        </p>
+
+                        @if ($SuratShow->lampiran)
+                            <a href="{{ asset('storage/' . $SuratShow->lampiran) }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="inline-flex items-center gap-2 text-sm font-medium text-blue-400 hover:text-blue-300 underline">
+
+                                Lihat / Unduh Lampiran
+                            </a>
+                        @else
+                            <p class="text-sm text-slate-400">
+                                Tidak ada lampiran.
+                            </p>
+                        @endif
+                    </div>
+
                     {{-- Keterangan --}}
                     <div class="sm:col-span-2 rounded-xl bg-white/[0.03] border border-white/5 p-5">
 
@@ -149,9 +185,7 @@
 
                     <a href="{{ route('surat-masuk.index') }}"
                        class="btn-secondary rounded-xl px-5 py-3 text-sm font-medium text-center">
-
                         ← Kembali ke Daftar
-
                     </a>
 
                 </div>
@@ -174,9 +208,7 @@
 
             <a href="{{ route('surat-masuk.index') }}"
                class="btn-primary inline-block rounded-xl px-5 py-3 mt-6 text-sm font-medium">
-
                 Kembali ke Surat Masuk
-
             </a>
 
         </div>

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class OutgoingLetter extends Model
 {
@@ -12,9 +13,16 @@ class OutgoingLetter extends Model
         'tujuan',
         'perihal',
         'keterangan',
+        'category_id',
+        'lampiran',
     ];
 
     protected $casts = [
         'tanggal' => 'date',
     ];
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
 }

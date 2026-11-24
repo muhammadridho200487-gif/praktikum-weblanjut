@@ -76,6 +76,81 @@
 
         </div>
 
+        {{-- SEARCH DAN FILTER --}}
+        <div class="p-6 border-b border-white/10">
+
+            <form action="{{ route('surat-keluar.index') }}"
+                  method="GET"
+                  class="grid gap-4 md:grid-cols-3">
+
+                <div class="md:col-span-2">
+                    <label for="q" class="block text-sm font-medium text-slate-300 mb-2">
+                        Cari Surat Keluar
+                    </label>
+
+                    <input type="text"
+                           id="q"
+                           name="q"
+                           value="{{ request('q') }}"
+                           placeholder="Cari nomor surat, tujuan, atau perihal..."
+                           class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                </div>
+
+                <div>
+                    <label for="category_id" class="block text-sm font-medium text-slate-300 mb-2">
+                        Filter Kategori
+                    </label>
+
+                    <select id="category_id"
+                            name="category_id"
+                            class="form-input w-full rounded-xl px-4 py-3 text-sm">
+
+                        <option value="">Semua Kategori</option>
+
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ request('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->nama }}
+                            </option>
+                        @endforeach
+
+                    </select>
+                </div>
+
+                <div class="md:col-span-3 flex flex-wrap gap-3">
+
+                    <button type="submit"
+                            class="btn-primary rounded-xl px-5 py-3 text-sm font-semibold">
+                        Cari Surat
+                    </button>
+
+                    <a href="{{ route('surat-keluar.index') }}"
+                       class="btn-secondary rounded-xl px-5 py-3 text-sm font-medium">
+                        Reset Filter
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+        {{-- INFORMASI JUMLAH DATA --}}
+        <div class="px-6 py-4 border-b border-white/10">
+            <p class="text-xs text-slate-400">
+                Menampilkan
+                <span class="text-white font-medium">
+                    {{ $SuratKeluar->firstItem() ?? 0 }}
+                    - {{ $SuratKeluar->lastItem() ?? 0 }}
+                </span>
+                dari
+                <span class="text-white font-medium">
+                    {{ $SuratKeluar->total() }}
+                </span>
+                data surat keluar.
+            </p>
+        </div>
+
         <div class="overflow-x-auto">
 
             <table class="table-modern w-full text-left text-sm">
@@ -87,6 +162,7 @@
                         <th class="px-6 py-4 font-medium">Tanggal</th>
                         <th class="px-6 py-4 font-medium">Tujuan</th>
                         <th class="px-6 py-4 font-medium">Perihal</th>
+                        <th class="px-6 py-4 font-medium">Kategori</th>
                         <th class="px-6 py-4 font-medium text-center">Aksi</th>
                     </tr>
                 </thead>
@@ -98,7 +174,7 @@
                         <tr class="hover:bg-white/[0.03] transition-colors">
 
                             <td class="px-6 py-4 text-slate-400">
-                                {{ $loop->iteration }}
+                                {{ $SuratKeluar->firstItem() + $loop->index }}
                             </td>
 
                             <td class="px-6 py-4 text-white font-medium whitespace-nowrap">
@@ -115,6 +191,18 @@
 
                             <td class="px-6 py-4 text-slate-300">
                                 {{ $surat->perihal }}
+                            </td>
+
+                            <td class="px-6 py-4">
+                                @if ($surat->category)
+                                    <span class="inline-flex rounded-lg border border-violet-400/20 bg-violet-500/10 px-3 py-1.5 text-xs font-medium text-violet-300">
+                                        {{ $surat->category->nama }}
+                                    </span>
+                                @else
+                                    <span class="text-xs text-slate-500">
+                                        Belum dikategorikan
+                                    </span>
+                                @endif
                             </td>
 
                             <td class="px-6 py-4">
@@ -158,7 +246,7 @@
                     @empty
 
                         <tr>
-                            <td colspan="6" class="px-6 py-12 text-center">
+                            <td colspan="7" class="px-6 py-12 text-center">
 
                                 <div class="flex flex-col items-center">
 
@@ -199,6 +287,13 @@
             </table>
 
         </div>
+
+        {{-- PAGINATION --}}
+        @if ($SuratKeluar->hasPages())
+            <div class="px-6 py-5 border-t border-white/10">
+                {{ $SuratKeluar->links() }}
+            </div>
+        @endif
 
         <div class="px-6 py-4 border-t border-white/10">
             <p class="text-xs text-slate-500">

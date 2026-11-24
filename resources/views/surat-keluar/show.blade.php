@@ -90,6 +90,34 @@
                         </p>
                     </div>
 
+                    <div class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wider text-slate-400">
+                            Kategori
+                        </p>
+                        <p class="font-semibold text-white">
+                            {{ $SuratShow->category->nama ?? '-' }}
+                        </p>
+                    </div>
+
+                    <div class="rounded-xl border border-white/10 bg-white/[0.03] p-4">
+                        <p class="mb-2 text-xs font-medium uppercase tracking-wider text-slate-400">
+                            Lampiran
+                        </p>
+
+                        @if ($SuratShow->lampiran)
+                            <a href="{{ asset('storage/' . $SuratShow->lampiran) }}"
+                               target="_blank"
+                               rel="noopener noreferrer"
+                               class="font-semibold text-blue-300 hover:text-blue-200 hover:underline">
+                                Lihat Lampiran
+                            </a>
+                        @else
+                            <p class="font-semibold text-slate-400">
+                                Tidak ada lampiran
+                            </p>
+                        @endif
+                    </div>
+
                     <div class="rounded-xl border border-white/10 bg-white/[0.03] p-4 sm:col-span-2">
                         <p class="mb-2 text-xs font-medium uppercase tracking-wider text-slate-400">
                             Keterangan

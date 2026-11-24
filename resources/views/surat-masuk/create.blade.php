@@ -56,6 +56,7 @@
 
         <form action="{{ route('surat-masuk.store') }}"
               method="POST"
+              enctype="multipart/form-data"
               class="space-y-5 p-6">
 
             @csrf
@@ -133,6 +134,51 @@
                            placeholder="Masukkan perihal surat">
 
                     @error('perihal')
+                        <p class="text-sm text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Kategori --}}
+                <div class="space-y-2">
+                    <label for="category_id" class="text-sm font-medium text-slate-200">
+                        Kategori Surat
+                    </label>
+
+                    <select id="category_id"
+                            name="category_id"
+                            class="form-input w-full rounded-xl px-4 py-3 text-sm">
+                        <option value="">Pilih Kategori</option>
+
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}"
+                                {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ $category->nama }}
+                            </option>
+                        @endforeach
+                    </select>
+
+                    @error('category_id')
+                        <p class="text-sm text-red-400">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                {{-- Lampiran --}}
+                <div class="space-y-2">
+                    <label for="lampiran" class="text-sm font-medium text-slate-200">
+                        Lampiran Surat
+                    </label>
+
+                    <input type="file"
+                           id="lampiran"
+                           name="lampiran"
+                           accept=".pdf,.jpg,.jpeg,.png"
+                           class="form-input w-full rounded-xl px-4 py-3 text-sm">
+
+                    <p class="text-xs text-slate-400">
+                        Format PDF, JPG, JPEG, PNG. Maksimal 2 MB.
+                    </p>
+
+                    @error('lampiran')
                         <p class="text-sm text-red-400">{{ $message }}</p>
                     @enderror
                 </div>
